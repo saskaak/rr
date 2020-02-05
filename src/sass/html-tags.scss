@@ -1,5 +1,19 @@
+@import "utilities";
+
 *,
 *::after,
 *::before {
+  box-sizing: inherit;
+}
+
+html {
   box-sizing: border-box;
+}
+
+body {
+  font-family: $ff-heebo;
+
+  // Normalize font rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -1,4 +1,6 @@
 import 'reset-css';
+import './sass/html-tags.scss';
+
 
 import Vue from 'vue'
 import App from './App.vue'
