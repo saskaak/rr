@@ -52,36 +52,33 @@
       >
         <h1 v-if="title" class="App__title">{{title}}</h1>
 
-        <table
-          class="App__table"
-          :class="{'App__table--compact': size === 'compact'}"
+        <div
+          class="App__grid"
+          :class="{'App_grid--compact': size === 'compact'}"
         >
-          <tbody>
-            <tr>
-              <th
-                v-for="(playerName, index) in playerNames"
-                :key="index"
-              >{{playerName}}
-              </th>
-            </tr>
-            <tr
-              v-for="(round, index) in rounds"
-              :key="index"
+          <div
+            v-for="card in cards"
+            :key="card.name"
+            class="App__column"
+          >
+            <div class="App__column-title">
+              {{card.name}}
+            </div>
+
+            <div
+              v-for="(opponent, index) in card.opponents"
+              :key="opponent.name"
             >
-              <td
-                v-for="playerName in playerNames"
-                :key="playerName"
-              >
                 <span class="App__round">
                   {{index + 1}}.
                 </span>
-                <span :class="{'App__bye': round[playerName].type === 'bye'}">
-                  {{round[playerName].name}}
+              <span :class="{'App__bye': opponent.type === 'bye'}">
+                  {{opponent.name}}
                 </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </div>
+
+          </div>
+        </div>
       </div>
     </template>
 
@@ -160,6 +157,12 @@
           return opponents;
         });
       },
+      cards() {
+        return this.playerNames.map((playerName) => ({
+          name: playerName,
+          opponents: this.rounds.map(round => round[playerName]),
+        }));
+      },
     },
     methods: {
       print() {
@@ -203,33 +206,27 @@
     padding: r(8);
   }
 
-  .App__table {
-    width: 100%;
-
-    th {
-      text-align: left;
-      font-weight: bold;
-      font-size: r(20);
-      padding: r(4) r(4) r(8);
-    }
-
-    td {
-      font-size: r(18);
-      padding: r(4);
-    }
+  .App__grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: r(-16);
 
     &--compact {
-      th {
-        text-align: left;
-        font-weight: bold;
-        font-size: r(16);
-        padding: r(2) r(2) r(4);
-      }
+      margin: r(-8);
+    }
+  }
 
-      td {
-        font-size: r(14);
-        padding: r(2);
-      }
+  .App__column-title {
+    margin-bottom: r(8);
+    font-weight: bold;
+  }
+
+  .App__column {
+    margin: r(16);
+
+    .App__grid--compact & {
+      font-size: r(14);
+      margin: r(8);
     }
   }
 
