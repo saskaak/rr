@@ -1,0 +1,11 @@
+@mixin screen-up($size) {
+  $min-width: map-get($breakpoints, $size);
+
+  @if ($min-width == null) {
+    @error "\"#{$size}\" is not a valid screen size.";
+  }
+
+  @media (min-width: r($min-width)) {
+    @content;
+  }
+}

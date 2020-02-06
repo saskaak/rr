@@ -1,19 +1,11 @@
 <template>
   <div class="App">
 
-    <div class="App__controls print-hide">
-      <div class="App__wrap">
-        <h1 class="App__title">Round Robin Schedule Sheet Builder</h1>
-        <p class="App__description margin-below">
-          Create a printable round robin bracket schedule. Schedule is created
-          using
-          <a
-            href="https://nrich.maths.org/1443"
-            class="App__link"
-          >polygon method</a>.
-        </p>
+    <AppHeader class="print-hide"/>
 
-        <label class="App__input-group margin-below">
+    <div class="App__controls">
+      <div class="container">
+        <label class="App__input-group">
           <span class="App__label-text">Players ({{playerNames.length}})</span>
           <textarea
             v-model="value"
@@ -23,7 +15,7 @@
           />
         </label>
 
-        <div class="App__input-group margin-below">
+        <div class="App__input-group">
           <span class="App__label-text">Sizing</span>
           <label class="App__checkbox-label">
             <input
@@ -41,7 +33,7 @@
           </label>
         </div>
 
-        <label class="App__input-group margin-below">
+        <label class="App__input-group">
           <span class="App__label-text">Title (optional)</span>
           <input type="text" v-model.trim="title" class="App__text-input">
         </label>
@@ -70,10 +62,15 @@
 </template>
 
 <script>
+  import AppHeader from './components/AppHeader';
   import PrintSheet from './components/PrintSheet';
+
   export default {
     name: 'App',
-    components: {PrintSheet},
+    components: {
+      PrintSheet,
+      AppHeader,
+    },
     data() {
       return {
         value: '',
@@ -104,7 +101,7 @@
 </script>
 
 <style lang="scss">
-  @import "sass/utilities";
+  @import "sass/definitions";
 
   .App {
   }
@@ -114,25 +111,9 @@
     padding: r(32) 0;
   }
 
-  .App__wrap {
-    margin: 0 auto 0;
-    max-width: r(800);
-    padding: 0 r(24);
-  }
-
-  .App__title {
-    font-weight: 900;
-    color: $color-white;
-    margin-bottom: r(16);
-    font-size: r(32);
-  }
-
-  .App__description {
-    color: $color-white;
-  }
-
-  .App__link {
-    color: $color-white;
+  .App__input-group {
+    display: block;
+    margin-bottom: r(24);
   }
 
   .App__label-text {
@@ -178,11 +159,6 @@
     @media print {
       display: none !important;
     }
-  }
-
-  .margin-below {
-    display: block;
-    margin-bottom: r(24);
   }
 
   button {

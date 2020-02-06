@@ -20,12 +20,8 @@
           :key="opponent.name"
           class="PrintSheet__round"
         >
-              <span class="PrintSheet__round-number">
-                {{index + 1}}.
-              </span>
-          <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">
-                {{opponent.name}}
-              </span>
+          <span class="PrintSheet__round-number">{{index + 1}}.</span>
+          <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">{{opponent.name}}</span>
         </div>
 
       </div>
@@ -114,7 +110,7 @@
 </script>
 
 <style lang="scss">
-  @import "../sass/utilities";
+  @import "../sass/definitions";
 
   .PrintSheet {
     display: flex;
