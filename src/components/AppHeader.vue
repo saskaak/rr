@@ -10,11 +10,11 @@
       </h1>
       <p class="AppHeader__description">
         Create a printable round robin bracket schedule. Schedule is created
-        using
+        using the "polygon method" described
         <a
           href="https://nrich.maths.org/1443"
           class="AppHeader__link"
-        >polygon method</a>.
+        >here</a>.
       </p>
     </div>
   </div>

@@ -5,10 +5,10 @@
 
         <div class="BuilderForm__column">
           <label>
-            <span class="BuilderForm__label-text">Players ({{playerNames.length}})</span>
+            <span class="BuilderForm__label-title">Players ({{playerNames.length}})</span>
             <textarea
               v-model="playersString"
-              class="BuilderForm__text-input"
+              class="BuilderForm__input-text BuilderForm__input"
               :rows="Math.max(playersStringLineCount, 10)"
               placeholder="Enter player names on each line"
             />
@@ -17,44 +17,33 @@
 
         <div class="BuilderForm__column">
           <label class="BuilderForm__input-group">
-            <span class="BuilderForm__label-text">Title (optional)</span>
-            <input type="text" v-model.trim="localTitle" class="BuilderForm__text-input">
+            <span class="BuilderForm__label-title">Title</span>
+            <input
+              type="text"
+              v-model.trim="localTitle"
+              class="BuilderForm__input-text BuilderForm__input"
+            >
           </label>
 
           <div class="BuilderForm__input-group">
-            <span class="BuilderForm__label-text">Size</span>
-            <label class="BuilderForm__checkbox-label">
-              <input
-                type="radio"
-                value="normal"
-                v-model="localSize"
-              > Normal
-            </label>
-            <label class="BuilderForm__checkbox-label">
-              <input
-                type="radio"
-                value="compact"
-                v-model="localSize"
-              > Compact
-            </label>
+            <div class="BuilderForm__label-title">Size</div>
+            <InputRadio
+              v-model="localSize"
+              :options="[{value: 'normal', label: 'Normal'}, {value: 'compact', label: 'Compact'}]"
+              class="BuilderForm__input"
+            />
           </div>
 
           <div class="BuilderForm__input-group">
-            <span class="BuilderForm__label-text">Preview size</span>
-            <label class="BuilderForm__checkbox-label">
-              <input
-                type="radio"
-                value="a4"
-                v-model="localPreviewSize"
-              > A4
-            </label>
-            <label class="BuilderForm__checkbox-label">
-              <input
-                type="radio"
-                value="letter"
-                v-model="localPreviewSize"
-              > Letter
-            </label>
+            <span class="BuilderForm__label-title">Preview size</span>
+            <span class="BuilderForm__label-description">
+              This sets the size of the preview view below. Doesn't change the actual print output in any way.
+            </span>
+            <InputRadio
+              v-model="localPreviewSize"
+              :options="[{value: 'a4', label: 'A4'}, {value: 'letter', label: 'Letter'}]"
+              class="BuilderForm__input"
+            />
           </div>
         </div>
 
@@ -65,8 +54,10 @@
 
 <script>
   import vueBind from "../lib/vueBind";
+  import InputRadio from "./InputRadio";
 
   export default {
+    components: {InputRadio},
     props: {
       title: String,
       size: String,
@@ -127,21 +118,32 @@
 
   .BuilderForm__input-group {
     display: block;
-    margin-bottom: r(24);
+
+    & + & {
+      margin-top: r(24);
+    }
   }
 
-  .BuilderForm__label-text {
+  .BuilderForm__label-title {
     display: block;
     color: $color-white;
-    margin-bottom: r(8);
     font-weight: bold;
   }
 
-  .BuilderForm__checkbox-label {
+  .BuilderForm__label-description {
+    display: block;
     color: $color-white;
+    font-size: r(14);
+    line-height: r(16);
+    margin-top: r(2);
+    opacity: 0.5;
   }
 
-  .BuilderForm__text-input {
+  .BuilderForm__input {
+    margin-top: r(8);
+  }
+
+  .BuilderForm__input-text {
     display: block;
     width: 100%;
     padding: r(8) r(12);
