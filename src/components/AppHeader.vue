@@ -28,7 +28,6 @@
   @import "../sass/definitions";
 
   .AppHeader {
-    background-color: $color-black;
     padding: r(24) 0;
   }
 

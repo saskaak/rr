@@ -1,5 +1,8 @@
 <template>
-  <div class="PrintSheet">
+  <div
+    class="PrintSheet"
+    :class="`PrintSheet--${previewSize}`"
+  >
     <h1 v-if="title" class="PrintSheet__title">{{title}}</h1>
 
     <div
@@ -41,6 +44,10 @@
         required: true,
       },
       size: {
+        type: String,
+        required: true,
+      },
+      previewSize: {
         type: String,
         required: true,
       },
@@ -115,52 +122,75 @@
   .PrintSheet {
     display: flex;
     flex-direction: column;
-    padding: r(24);
-    max-width: r(960);
+    padding: 10mm;
     margin: 0 auto;
+    background-color: $color-white;
+    box-shadow: 0 r(8) r(24) $color-black;
+
+    &--a4 {
+      width: 210mm;
+      height: 297mm;
+    }
+
+    &--letter {
+      width: 8.5in;
+      height: 11in;
+    }
 
     @media print {
-      padding: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: none;
     }
+  }
+
+  .PrintSheet__title {
+    margin-bottom: r(16);
+    font-weight: 700;
+    font-size: r(28);
   }
 
   .PrintSheet__grid {
     display: flex;
     flex-wrap: wrap;
-    margin: r(-16);
+    margin: -4mm;
 
     &--compact {
-      margin: r(-8);
+      margin: -2mm;
+    }
+  }
+
+  .PrintSheet__column {
+    font-size: 4.5mm;
+    margin: 4mm;
+
+    .PrintSheet__grid--compact & {
+      margin: 2mm;
+      font-size: 4mm;
     }
   }
 
   .PrintSheet__column-title {
-    margin-bottom: r(8);
+    margin-bottom: 2mm;
     font-weight: bold;
   }
 
-  .PrintSheet__column {
-    margin: r(20);
-
-    .PrintSheet__grid--compact & {
-      font-size: r(14);
-      margin: r(12);
-    }
-  }
-
   .PrintSheet__round {
+    display: flex;
+
     & + & {
-      margin-top: r(4);
+      margin-top: 1mm;
     }
   }
 
   .PrintSheet__round-number {
     opacity: 0.5;
+    margin-right: 1mm;
   }
 
   .PrintSheet__bye {
     display: inline-block;
-    font-size: r(12);
+    font-size: 3mm;
     text-align: center;
     font-family: sans-serif;
     border: solid r(1);
@@ -173,11 +203,5 @@
       font-size: r(10);
       padding: r(1) r(6);
     }
-  }
-
-  .PrintSheet__title {
-    font-weight: 900;
-    margin-bottom: r(16);
-    font-size: r(32);
   }
 </style>
