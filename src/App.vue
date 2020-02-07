@@ -11,6 +11,7 @@
         :title.sync="title"
         :size.sync="size"
         :preview-size.sync="previewSize"
+        :options-preview-size="optionsPreviewSize"
       />
     </template>
 
@@ -34,6 +35,7 @@
           :title="title"
           :size="size"
           :preview-size="previewSize"
+          :preview-size-label="previewSizeLabel"
         />
       </template>
     </template>
@@ -61,11 +63,24 @@
         title: '',
         size: 'normal',
         previewSize: 'a4',
+        optionsPreviewSize: [
+          {
+            label: 'A4',
+            value: 'a4',
+          },
+          {
+            label: 'Letter',
+            value: 'letter',
+          },
+        ],
       };
     },
     computed: {
       duplicatePlayersExist() {
         return (new Set(this.playerNames)).size !== this.playerNames.length;
+      },
+      previewSizeLabel() {
+        return this.optionsPreviewSize.find(option => option.value === this.previewSize).label;
       },
     },
     methods: {

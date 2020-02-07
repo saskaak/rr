@@ -37,11 +37,11 @@
           <div class="BuilderForm__input-group">
             <span class="BuilderForm__label-title">Preview size</span>
             <span class="BuilderForm__label-description">
-              This sets the size of the preview view below. Doesn't change the actual print output in any way.
+              This sets the size of the preview view below. Doesn't affect the actual print output in any way.
             </span>
             <InputRadio
               v-model="localPreviewSize"
-              :options="[{value: 'a4', label: 'A4'}, {value: 'letter', label: 'Letter'}]"
+              :options="optionsPreviewSize"
               class="BuilderForm__input"
             />
           </div>
@@ -62,6 +62,7 @@
       title: String,
       size: String,
       previewSize: String,
+      optionsPreviewSize: Array,
     },
     data() {
       return {

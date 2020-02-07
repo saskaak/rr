@@ -3,30 +3,37 @@
     class="PrintSheet"
     :class="`PrintSheet--${previewSize}`"
   >
-    <h1 v-if="title" class="PrintSheet__title">{{title}}</h1>
+    <div class="PrintSheet__corner">
+      {{previewSizeLabel}}
+    </div>
+    <div class="PrintSheet__corner PrintSheet__corner--right" />
 
-    <div
-      class="PrintSheet__grid"
-      :class="{'PrintSheet__grid--compact': size === 'compact'}"
-    >
+    <div class="PrintSheet__paper">
+      <h1 v-if="title" class="PrintSheet__title">{{title}}</h1>
+
       <div
-        v-for="card in cards"
-        :key="card.name"
-        class="PrintSheet__column"
+        class="PrintSheet__grid"
+        :class="{'PrintSheet__grid--compact': size === 'compact'}"
       >
-        <div class="PrintSheet__column-title">
-          {{card.name}}
-        </div>
-
         <div
-          v-for="(opponent, index) in card.opponents"
-          :key="opponent.name"
-          class="PrintSheet__round"
+          v-for="card in cards"
+          :key="card.name"
+          class="PrintSheet__column"
         >
-          <span class="PrintSheet__round-number">{{index + 1}}.</span>
-          <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">{{opponent.name}}</span>
-        </div>
+          <div class="PrintSheet__column-title">
+            {{card.name}}
+          </div>
 
+          <div
+            v-for="(opponent, index) in card.opponents"
+            :key="opponent.name"
+            class="PrintSheet__round"
+          >
+            <span class="PrintSheet__round-number">{{index + 1}}.</span>
+            <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">{{opponent.name}}</span>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -48,6 +55,10 @@
         required: true,
       },
       previewSize: {
+        type: String,
+        required: true,
+      },
+      previewSizeLabel: {
         type: String,
         required: true,
       },
@@ -119,28 +130,93 @@
 <style lang="scss">
   @import "../sass/definitions";
 
+  $paper-sizes: (
+    a4: 210mm 297mm,
+    letter: 8.5in 11in,
+  );
+  $scaling-factors: (
+    1 5,
+    1 4,
+    1 3,
+    1 2,
+    3 4,
+    1 1,
+  );
+
+  // This whole thing makes me a bit uneasy...
+  @each $name, $dimensions in $paper-sizes {
+    $width: nth($dimensions, 1);
+    $height: nth($dimensions, 2);
+
+    .PrintSheet--#{$name} {
+      width: $width;
+      padding-top: percentage($height / $width);
+
+      .PrintSheet__paper {
+        width: $width;
+        height: $height;
+      }
+
+      @each $scaling-factor-parts in $scaling-factors {
+        $numerator: nth($scaling-factor-parts, 1);
+        $denominator: nth($scaling-factor-parts, 2);
+        $scaling-factor: $numerator / $denominator;
+
+        // Optimally I'd like to match the 10mm padding with the .container padding. There are two problems with that:
+        // 1. At least on Chrome 79, while media queries DO support calc(), mixing rems and mm in a single calc doesn't
+        //    seem to work.
+        // 2. The padding in .container changes with screen size. How would that even work with current approach...?
+        @media (min-width: $width * $scaling-factor + 10mm) {
+          width: $width * $scaling-factor;
+
+          .PrintSheet__corner--right::after {
+            content: "#{$numerator}:#{$denominator}";
+          }
+
+          .PrintSheet__paper {
+            transform: scale($scaling-factor);
+          }
+        }
+      }
+    }
+  }
+
   .PrintSheet {
-    display: flex;
-    flex-direction: column;
-    padding: 10mm;
+    position: relative;
+    max-width: 100vw;
     margin: 0 auto;
     background-color: $color-white;
     box-shadow: 0 r(8) r(24) $color-black;
 
-    &--a4 {
-      width: 210mm;
-      height: 297mm;
+    @media print {
+      width: 100% !important;
+      box-shadow: none;
     }
+  }
 
-    &--letter {
-      width: 8.5in;
-      height: 11in;
+  .PrintSheet__corner {
+    position: absolute;
+    top: 0;
+    transform: translateY(-100%);
+    padding-bottom: r(2);
+    font-size: r(14);
+    color: $color-white;
+    opacity: 0.5;
+
+    &--right {
+      right: 0;
     }
+  }
+
+  .PrintSheet__paper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8mm;
+    transform-origin: top left;
 
     @media print {
-      width: 100%;
-      height: 100%;
-      box-shadow: none;
+      transform: none !important;
     }
   }
 
