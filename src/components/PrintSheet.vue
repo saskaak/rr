@@ -3,36 +3,38 @@
     class="PrintSheet"
     :class="`PrintSheet--${previewSize}`"
   >
-    <div class="PrintSheet__corner">
-      {{previewSizeLabel}}
-    </div>
-    <div class="PrintSheet__corner PrintSheet__corner--right" />
+    <div class="PrintSheet__height">
+      <div class="PrintSheet__corner">
+        {{previewSizeLabel}}
+      </div>
+      <div class="PrintSheet__corner PrintSheet__corner--right"/>
 
-    <div class="PrintSheet__paper">
-      <h1 v-if="title" class="PrintSheet__title">{{title}}</h1>
+      <div class="PrintSheet__paper">
+        <h1 v-if="title" class="PrintSheet__title">{{title}}</h1>
 
-      <div
-        class="PrintSheet__grid"
-        :class="{'PrintSheet__grid--compact': size === 'compact'}"
-      >
         <div
-          v-for="card in cards"
-          :key="card.name"
-          class="PrintSheet__column"
+          class="PrintSheet__grid"
+          :class="{'PrintSheet__grid--compact': size === 'compact'}"
         >
-          <div class="PrintSheet__column-title">
-            {{card.name}}
-          </div>
-
           <div
-            v-for="(opponent, index) in card.opponents"
-            :key="opponent.name"
-            class="PrintSheet__round"
+            v-for="card in cards"
+            :key="card.name"
+            class="PrintSheet__column"
           >
-            <span class="PrintSheet__round-number">{{index + 1}}.</span>
-            <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">{{opponent.name}}</span>
-          </div>
+            <div class="PrintSheet__column-title">
+              {{card.name}}
+            </div>
 
+            <div
+              v-for="(opponent, index) in card.opponents"
+              :key="opponent.name"
+              class="PrintSheet__round"
+            >
+              <span class="PrintSheet__round-number">{{index + 1}}.</span>
+              <span :class="{'PrintSheet__bye': opponent.type === 'bye'}">{{opponent.name}}</span>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -150,7 +152,10 @@
 
     .PrintSheet--#{$name} {
       width: $width;
-      padding-top: percentage($height / $width);
+
+      .PrintSheet__height {
+        padding-top: percentage($height / $width);
+      }
 
       .PrintSheet__paper {
         width: $width;
@@ -183,7 +188,6 @@
 
   .PrintSheet {
     position: relative;
-    max-width: 100vw;
     margin: 0 auto;
     background-color: $color-white;
     box-shadow: 0 r(8) r(24) $color-black;
@@ -192,6 +196,10 @@
       width: 100% !important;
       box-shadow: none;
     }
+  }
+
+  .PrintSheet__height {
+    position: relative;
   }
 
   .PrintSheet__corner {

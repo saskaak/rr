@@ -37,7 +37,7 @@
           <div class="BuilderForm__input-group">
             <span class="BuilderForm__label-title">Preview size</span>
             <span class="BuilderForm__label-description">
-              This sets the size of the preview view below. Doesn't affect the actual print output in any way.
+              This sets the size of the preview view below. Doesn't affect the actual print output.
             </span>
             <InputRadio
               v-model="localPreviewSize"

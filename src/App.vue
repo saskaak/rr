@@ -95,23 +95,29 @@
   @import "sass/definitions";
 
   .App__error {
-    color: #ff5252;
+    color: $color-pink;
     font-family: sans-serif;
     text-align: center;
   }
 
   .App__print {
-    background-color: #73e698;
+    color: $color-pink;
+    border: r(1) solid;
+    background-color: transparent;
     display: block;
-    padding: r(8) r(16);
-    border: none;
-    font-weight: bold;
+    padding: r(8) r(32);
     font-size: r(14);
-    letter-spacing: r(1);
+    letter-spacing: r(2);
     text-transform: uppercase;
     cursor: pointer;
-    border-radius: r(8);
-    margin: 0 auto r(16);
+    border-radius: r(4);
+    margin: 0 auto r(48);
+    transition: box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 r(2) rgba($color-pink, 0.5);
+    }
 
     @media print {
       display: none;

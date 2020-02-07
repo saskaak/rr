@@ -38,9 +38,6 @@
 
   .AppLayout__content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     background-color: $color-gray-dark;
     padding-top: r(32);
 
@@ -52,7 +49,7 @@
   }
 
   .AppLayout__builder-form {
-    margin-bottom: r(64);
+    margin-bottom: r(48);
 
     @media print {
       display: none;
